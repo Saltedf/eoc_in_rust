@@ -1,0 +1,30 @@
+use crate::ast::*;
+use std::collections::HashMap;
+
+grammar;
+
+match {
+    r"\s*" => {},
+    _
+}
+
+pub Lvar : Program = <exp: Exp> => Program { info:HashMap::new(),env:HashMap::new(), body:exp } ;
+
+Exp : Exp = {
+    r"-?[1-9][0-9]*" => Exp::Int( <>.parse::<i64>().unwrap()),
+    "(" "read" ")" => Exp::Prim{op:PrimType::Read,args:Vec::new()} ,
+    "(" "-" <exp: Exp> ")" => Exp::Prim{op:PrimType::Neg,args:vec![exp]},
+    "(" "+" <e1: Exp> <e2:Exp> ")" => Exp::Prim{op:PrimType::Add,args:vec![e1,e2]},
+    "(" "-" <e1: Exp> <e2:Exp> ")" => Exp::Prim{op:PrimType::Sub,args:vec![e1,e2]},
+    
+    r"[_a-zA-Z][_a-zA-Z0-9]*" =>  Exp::Var(<>.to_string()) ,
+    "(" "let" "(" "[" <var:VarName> <b:Exp> "]" ")" <body:Exp> ")" => Exp::Let{var:var ,binding:Box::new(b),body:Box::new(body)},
+
+
+};
+
+
+
+VarName : String  = r"[_a-zA-Z][_a-zA-Z0-9]*" =>  <>.to_string() ;
+
+
