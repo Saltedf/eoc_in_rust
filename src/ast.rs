@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
-pub type Env = HashMap<String,i64 >;
+pub type Env = HashMap<String,i64>;
+
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Program {

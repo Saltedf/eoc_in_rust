@@ -1,6 +1,9 @@
 lalrpop_mod!(l_var);
 mod ast;
 mod interp;
+mod x86;
+mod clike;
+mod passes; 
 
 use std::fs::read_to_string;
 use lalrpop_util::lalrpop_mod;
